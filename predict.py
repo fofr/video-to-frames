@@ -1,5 +1,5 @@
 from cog import BasePredictor, Input, Path
-from typing import List, Optional
+from typing import List
 import subprocess
 import os
 
