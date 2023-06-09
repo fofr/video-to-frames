@@ -5,24 +5,20 @@ import os
 
 class Predictor(BasePredictor):
     def predict(self,
-                video: Path = Input(description="Video input"),
-                fps: int = Input(description="Number of images per second of video. Leave blank for all frames.", default=1)
+                video: Path = Input(description="Video to split into frames"),
+                fps: int = Input(description="Number of images per second of video, when not exporting all frames", default=1),
+                extract_all_frames: bool = Input(description="Get every frame of the video. Ignores fps. Slow for large videos.", default=False),
     ) -> List[Path]:
         """Run ffmpeg to split the video into frames"""
         os.makedirs("/tmp/frames", exist_ok=True)
 
-        # If fps is provided, use it in the ffmpeg command
-        if fps is not None:
+        if not extract_all_frames:
             command = f"ffmpeg -i {video} -vf fps={fps} /tmp/frames/out%03d.png"
         else:
-            # Default to showing every frame
             command = f"ffmpeg -i {video} /tmp/frames/out%03d.png"
 
         subprocess.run(command, shell=True, check=True)
-
-        # Get the paths to the frames
         frame_files = sorted(os.listdir("/tmp/frames"))
         frame_paths = [Path(os.path.join("/tmp/frames", frame_file)) for frame_file in frame_files]
 
-        # Return the paths to the frames
         return frame_paths
