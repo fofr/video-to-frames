@@ -3,7 +3,4 @@ build:
   system_packages:
     - "ffmpeg"
   python_version: "3.8"
-  python_packages:
-    - "numpy"
-    - "opencv-python-headless"
 predict: "predict.py:Predictor"
