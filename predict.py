@@ -6,7 +6,7 @@ import os
 class Predictor(BasePredictor):
     def predict(self,
                 video: Path = Input(description="Video input"),
-                fps: int = Input(description="Frames per second", default=None)
+                fps: int = Input(description="Number of images per second of video. Leave blank for all frames.", default=1)
     ) -> List[Path]:
         """Run ffmpeg to split the video into frames"""
         os.makedirs("/tmp/frames", exist_ok=True)
